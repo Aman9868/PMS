@@ -609,7 +609,7 @@ window.Set_Milestone_Head = async function (id) {
     }
 }
 
-window.Toggle_Arch_Completed_task = async function (id,milestone_id) {
+window.Toggle_Arch_Completed_task = async function (id, milestone_id) {
     var isChecked = $('#' + id).prop('checked');
     var status = 'Completed'
     if (isChecked){

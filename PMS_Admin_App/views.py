@@ -34,14 +34,13 @@ def Employee_List(request,user):
     employee_obj =  User_Details.objects.all().order_by('-id')
     company_obj =  CompanyMaster.objects.all().order_by('-id')
     rendered = render_to_string('superadmin/rts/employee_rts.html',{'employee_obj':employee_obj,'designation_obj':designation_obj,'company_obj':company_obj})
-    
     context = {
-            'user':user,
-            'rendered':rendered,
-            'page_title':"Employee List",
-            "designation_obj":designation_obj,
-            'company_obj':company_obj
-        }
+        'user':user,
+        'rendered':rendered,
+        'page_title':"Employee List",
+        "designation_obj":designation_obj,
+        'company_obj':company_obj
+    }
     return render(request,'superadmin/htmls/employee_list.html',context)
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)

@@ -12,6 +12,9 @@
                     </a>
                    <div class="dropdown-menu dropdown-menu-end">
                         <a class="dropdown-item deletetask" target="_blank" href="{% url 'View_user_Task_Detail' i.id %}">View</a>
+                        {% if user.id == i.fk_milestone.fk_milestone_head.id %}
+                            <a class="dropdown-item edittask-details"  href="#" onclick="Update_Task_Modal('{{i.id}}')" >Edit</a>
+                        {% endif %}
                         {% comment %} <a class="dropdown-item deletetask" href="#" onclick="Delete_Task('{{i.id}}')" data-id="#uptask-2">Delete</a>
                         <a class="dropdown-item edittask-details"  href="#" onclick="Update_Task_Modal('{{i.id}}')" >Edit</a> {% endcomment %}
                     </div>

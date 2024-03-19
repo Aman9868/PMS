@@ -54,8 +54,56 @@
                 </div>
             </div>
             <!-- end page title -->
+{% comment %} start add milestone {% endcomment %}
+                            <div class="modal fade" id="Modal_Add_Milestone" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Milestone</h1>
+                                            <button type="button" onclick="Modal_Close_milestone('{{forloop.counter}}')" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="border-radius: 50px; box-shadow: 0px 0px 5px 0px gray; width: 20px;height: 20px;"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="card-body">
+                                                
+                                                <div class="col-ls-12">
+                                                    <label for="milestone_title" class="col-form-label col-lg-2">Milestone Title</label>
+                                                    <input  onkeyup="Hide_Error(id)" id="milestone_title" type="text" class="form-control" placeholder="Enter Milestone Title...">
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <label for="milestone_head" class="col-form-label col-lg-12">Milestone Head</label>
+
+                                                    <select class="form-control" onclick="Hide_Error(id)" id="milestone_head">
+                                                        <option value="">Select Head</option>
+                                                        {% for i in user_obj %}
+                                                            <option value="{{i.id}}" data-select2-id="97">{{i.first_name}} {{i.last_name}} ({{i.fk_designation.designation}})</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <label class="col-form-label">Start Date</label>
+                                                        <input type="date" onclick="Hide_Error(id)" id="start_date" class="form-control" min="{{ today|date:"Y-m-d" }}"   placeholder="Start Date" name="start">
+                                                    </div> 
+
+                                                    <div class="col-lg-6">
+                                                        <label class="col-form-label">End Date</label>
+                                                        <input type="date" onclick="Hide_Error(id)" id="end_date" class="form-control" min="{{ today|date:"Y-m-d" }}" placeholder="End Date" name="end" >
+                                                    </div>
+                                                </div>    
+
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" onclick="Add_Milestone(this,{{project_id}})" class="btn btn-primary">Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% comment %} end add milestone modal{% endcomment %}
 
             <div class="row">
+                
                 {% if milstones_obj %}
                     {% for i in milstones_obj %}
                         <div class="col-xl-4 col-sm-4">
@@ -181,54 +229,7 @@
                             </div>
                             {% comment %} end add member in milestone {% endcomment %}
 
-                            {% comment %} start add milestone {% endcomment %}
-                            <div class="modal fade" id="Modal_Add_Milestone" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Milestone</h1>
-                                            <button type="button" onclick="Modal_Close_milestone('{{forloop.counter}}')" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="border-radius: 50px; box-shadow: 0px 0px 5px 0px gray; width: 20px;height: 20px;"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="card-body">
-                                                
-                                                <div class="col-ls-12">
-                                                    <label for="milestone_title" class="col-form-label col-lg-2">Milestone Title</label>
-                                                    <input  onkeyup="Hide_Error(id)" id="milestone_title" type="text" class="form-control" placeholder="Enter Milestone Title...">
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <label for="milestone_head" class="col-form-label col-lg-12">Milestone Head</label>
-
-                                                    <select class="form-control" onclick="Hide_Error(id)" id="milestone_head">
-                                                        <option value="">Select Head</option>
-                                                        {% for i in user_obj %}
-                                                            <option value="{{i.id}}" data-select2-id="97">{{i.first_name}} {{i.last_name}} ({{i.fk_designation.designation}})</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <label class="col-form-label">Start Date</label>
-                                                        <input type="date" onclick="Hide_Error(id)" id="start_date" class="form-control" min="{{ today|date:"Y-m-d" }}"   placeholder="Start Date" name="start">
-                                                    </div> 
-
-                                                    <div class="col-lg-6">
-                                                        <label class="col-form-label">End Date</label>
-                                                        <input type="date" onclick="Hide_Error(id)" id="end_date" class="form-control" min="{{ today|date:"Y-m-d" }}" placeholder="End Date" name="end" >
-                                                    </div>
-                                                </div>    
-
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" onclick="Add_Milestone(this,{{project_id}})" class="btn btn-primary">Add</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% comment %} end add milestone modal{% endcomment %}
-
+                            
                         {% comment %} update milestone start {% endcomment %}
 
                             <div class="modal fade" id="Modal_Add_Milestone{{forloop.counter}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -296,6 +297,7 @@
                     </div>
                     <div class="col-xl-6 col-sm-6"></div>
                 {% endif %}
+
             </div>
             <!-- end row -->            
         </div> <!-- container-fluid -->

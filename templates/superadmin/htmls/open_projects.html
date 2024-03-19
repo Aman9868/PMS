@@ -68,7 +68,7 @@
                                             <div class="avatar-md">
                                                 <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
                                                     {% comment %} <img src="{% static 'assets/images/companies/img-1.png' %}" alt="" height="30"> {% endcomment %}
-                                                    <img  {% if i.fk_milestone_head. %}  src="{{i.project_logo.url}}" {% else %} src="{% static 'assets/images/companies/img-1.png' %}" {% endif %} alt="" class="avatar-sm">
+                                                    <img  {% if i.project_logo %}  src="{{i.project_logo.url}}" {% else %} src="{% static 'assets/images/companies/img-1.png' %}" {% endif %} alt="" class="avatar-sm">
                                                 </span>
                                             </div>
                                         </div>

@@ -114,9 +114,9 @@ def Show_User_Tasks(request,user,id):
         progress_obj = Task_Master.objects.filter(Q(status='Progress') & (Q(fk_milestone_id=id) & (Q(fk_task_member_id=user.id) | Q(fk_task_creator_id=user.id)))).order_by('-id')
         completed_obj = Task_Master.objects.filter(Q(status='Completed') & (Q(fk_milestone_id=id) & (Q(fk_task_member_id=user.id) | Q(fk_task_creator_id=user.id)))).order_by('-id')
         
-        pending_rendered = render_to_string('user/rts/kanban/rts_pending.html',{'pending_obj':pending_obj})
-        progress_rendered = render_to_string('user/rts/kanban/rts_progress.html',{'progress_obj':progress_obj})
-        completed_rendered = render_to_string('user/rts/kanban/rts_completed.html',{'completed_obj':completed_obj})
+        pending_rendered = render_to_string('user/rts/kanban/rts_pending.html',{'user':user,'pending_obj':pending_obj})
+        progress_rendered = render_to_string('user/rts/kanban/rts_progress.html',{'user':user,'progress_obj':progress_obj})
+        completed_rendered = render_to_string('user/rts/kanban/rts_completed.html',{'user':user,'completed_obj':completed_obj})
         obj =  Project_Milestone.objects.get(id=id)
         
         print(user.id)
