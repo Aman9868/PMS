@@ -609,7 +609,51 @@ window.Set_Milestone_Head = async function (id) {
     }
 }
 
-window.Toggle_Arch_Completed_task = async function (id) {
+window.Toggle_Arch_Completed_task = async function (id,milestone_id) {
     var isChecked = $('#' + id).prop('checked');
-    alert(isChecked)
+    var status = 'Completed'
+    if (isChecked){
+        status = 'Archive'
+    }
+    var data = JSON.stringify({
+        'milestone_id': milestone_id,
+        'status':status
+    })
+    let response = await callAjax('/pms_admin/Filte_Archive_completed_task',data);
+    if (response.status == 1) {
+        $('#complete-task').html(response.completed_rendered)
+    }
+    else {
+        sweetAlertMsg('Error!', response.msg, 'error');
+    }
+}
+
+window.Archive_Task = async function (task_id, title) {
+    var isChecked = $('#switch3').prop('checked');
+    var status = 'Archive'
+    if (isChecked){
+        status = 'Completed'
+    }
+    if (status == 'Archive') {
+        var preference = await sweetAlertMsg('Are you sure?', `You are about to archive ${title} task. This action cannot be undone.`, 'warning', 'cancel', 'Yes', 'No')    
+    }
+    else {
+        var preference = await sweetAlertMsg('Are you sure?', `You are about to shift archive ${title} task to completed list. This action cannot be undone.`, 'warning', 'cancel', 'Yes', 'No')
+    }
+    if (preference) {
+        var data = JSON.stringify({
+            'task_id': task_id,
+            'status':status
+        })
+        let response = await callAjax('/pms_admin/Archive_Task',data);
+        if (response.status == 1) {
+            var done = await sweetAlertMsg('Success!', response.msg, 'success');
+            if (done) {
+                location.reload()
+            }    
+        }
+        else {
+            sweetAlertMsg('Error!', response.msg, 'error');
+        }
+    }
 }

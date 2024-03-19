@@ -4,6 +4,7 @@
         <th>Sr No</th>
         <th>Name</th>
         <th>Email</th>
+        <th>Company</th>
         <th>Designation</th>
         <th>Mobile No</th>
         <th>Reg Date</th>
@@ -17,6 +18,7 @@
             <td>{{forloop.counter}}</td>
             <td>{{i.first_name}} {{i.last_name}}</td>
             <td>{{i.email}}</td>
+            <td>{{i.fk_company.company_name}}</td>
             <td>{{i.fk_designation.designation}}</td>
             <td>{{i.mobile_number}}</td>
             <td>{{i.created_date|date:"d-m-Y"}}</td>
@@ -40,6 +42,16 @@
                         </div>
                         <div class="modal-body">
                             {% comment %} Add ur field here {% endcomment %}
+                            <div class="col-md-12 pt-3">
+                                <label for="company">Select Company</label>
+                                <select name="" onclick="Hide_Error(id)" class="form-control" id="company{{i.id}}">
+                                    <option value="">Select Company</option>
+                                    {% for k in company_obj %}
+                                        <option {% if i.fk_company.id == k.id %} selected {% endif %}value="{{k.id}}">{{k.company_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
                             <div class="col-md-12 pt-3">
                                 <label for="mobile_number">Select Designation</label>
                                 <select name="" class="form-control" id="designation{{i.id}}">

@@ -60,6 +60,7 @@ window.Change_Contributor_Status = async function (id,change_status_to) {
 
 // add employee
 window.Add_Employee_By_SuperAdmin = async function (_this) {
+    var fk_company = $('#company').val() 
     var fk_designation = $('#designation').val()
     var first_name = $('#first_name').val()
     var last_name = $('#last_name').val()
@@ -67,47 +68,45 @@ window.Add_Employee_By_SuperAdmin = async function (_this) {
     var mobile_no = $('#mobile_number').val()
     var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     var is_email_valid = emailRegex.test(email);
-    
-    if (!fk_designation) {
+    if (!fk_company) {
+        showToastMsg('Error', 'Please select Company', 'error')
+        $('#company').focus().css('border-color', '#f46a6a');        
+    }
+    else if (!fk_designation) {
         showToastMsg('Error', 'Please select designation', 'error')
-        $('#designation').focus()
+        $('#designation').focus().css('border-color', '#f46a6a');
     }
     else if (!first_name) {
         showToastMsg('Error', 'Please enter first name', 'error')
-        $('#first_name').focus()
-        $('#first_name').css('border-color', '#f46a6a');    
+        $('#first_name').focus().css('border-color', '#f46a6a');    
     }
     else if (!last_name) {
         showToastMsg('Error', 'Please enter last name ', 'error')
-        $('#last_name').focus()
-        $('#last_name').css('border-color', '#f46a6a');
+        $('#last_name').focus().css('border-color', '#f46a6a');
     }
     else if (!email) {
         showToastMsg('Error', 'Please enter email', 'error')
-        $('#email').focus()
-        $('#email').css('border-color', '#f46a6a');
+        $('#email').focus().css('border-color', '#f46a6a');
     }
     else if (!is_email_valid) {
         showToastMsg('Error', 'Please enter valid email', 'error')
-        $('#email').focus()
-        $('#email').css('border-color', '#f46a6a');
+        $('#email').focus().css('border-color', '#f46a6a');
     }
     
     else if (!mobile_no) {
         showToastMsg('Error', 'Please enter mobile number', 'error')
-        $('#mobile_number').focus()
-        $('#mobile_number').css('border-color', '#f46a6a');
+        $('#mobile_number').focus().css('border-color', '#f46a6a');
     }
     else if (mobile_no.length < 10) {
         showToastMsg('Error', 'Please enter valid mobile number', 'error')
-        $('#mobile_number').focus()
-        $('#mobile_number').css('border-color', '#f46a6a');
+        $('#mobile_number').focus().css('border-color', '#f46a6a');
     }
     else {
         $('#exampleModalScrollable').hide();
         var preference = await sweetAlertMsg('Are you sure?', `You are about to add this employee. This action cannot be undone.`, 'warning', 'cancel', 'Yes', 'No')
         if (preference) {
             var data = JSON.stringify({
+                'fk_company':fk_company,
                 "fk_designation":fk_designation,
                 'first_name': first_name,
                 'last_name': last_name,
@@ -138,6 +137,7 @@ window.Add_Employee_By_SuperAdmin = async function (_this) {
 
 
 window.Update_Employee_By_SuperAdmin = async function (_this, id) {
+    var fk_company = $('#company' + id).val()
     var fk_designation = $('#designation'+id).val()
     var first_name = $('#first_name'+id).val()
     var last_name = $('#last_name'+id).val()
@@ -146,7 +146,11 @@ window.Update_Employee_By_SuperAdmin = async function (_this, id) {
     var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     var is_email_valid = emailRegex.test(email);
     
-    if (!fk_designation) {
+    if (!fk_company) {
+        showToastMsg('Error', 'Please select company', 'error')
+        $('#company'+id).focus()
+    }
+    else if (!fk_designation) {
         showToastMsg('Error', 'Please select designation', 'error')
         $('#designation').focus()
     }
@@ -186,7 +190,8 @@ window.Update_Employee_By_SuperAdmin = async function (_this, id) {
         var preference = await sweetAlertMsg('Are you sure?', `You are about to update this employee. This action cannot be undone.`, 'warning', 'cancel', 'Yes', 'No')
         if (preference) {
             var data = JSON.stringify({
-                "id":id,
+                "id": id,
+                'fk_company':fk_company,
                 "fk_designation":fk_designation,
                 'first_name': first_name,
                 'last_name': last_name,

@@ -16,6 +16,7 @@ dragula([
         }),
         success: function (response) {
             if (response['status'] == 1) {
+                $('#switch3').prop('checked', false);
                 $('#upcoming-task').html(response.rendered.pending_rendered)
                 $('#inprogress-task').html(response.rendered.progress_rendered)
                 $('#complete-task').html(response.rendered.completed_rendered)

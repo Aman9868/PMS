@@ -110,6 +110,7 @@ def Add_Employee_By_SuperAdmin(request):
             last_name = parsed_data['last_name']
             email=parsed_data['email']
             mobile_no = parsed_data['mobile_no']
+            fk_company =  parsed_data['fk_company']
             fk_designation=parsed_data['fk_designation']
             if User_Details.objects.filter(email=email).exists():
                 send_data = {'status':0,'msg':'It seems like this email is already in use. Please try using a different email address.'}
@@ -117,7 +118,7 @@ def Add_Employee_By_SuperAdmin(request):
                 send_data = {'status':0,'msg':'It seems like this mobile number is already in use. Please try using a different mobile number.'}
             else:
                 passsword = ''.join(random.choice(string.ascii_letters + string.digits + string.punctuation) for i in range(8))
-                User_Details.objects.create(fk_designation_id=fk_designation,email=email,mobile_number=mobile_no,password=passsword,first_name=first_name,last_name=last_name,created_date=datetime.now().date())
+                User_Details.objects.create(fk_company_id=fk_company,fk_designation_id=fk_designation,email=email,mobile_number=mobile_no,password=passsword,first_name=first_name,last_name=last_name,created_date=datetime.now().date())
                 send_data = {'status':1,'msg':f'Employee added successfully and credential sent on following email {email}'}
         else:
             send_data = {'status':0,'msg':f'Request is not post'}
@@ -138,7 +139,9 @@ def Update_Employee_By_SuperAdmin(request):
             email=parsed_data['email']
             mobile_no = parsed_data['mobile_no']
             fk_designation=parsed_data['fk_designation']
-            User_Details.objects.filter(id=id).update(fk_designation_id=fk_designation,email=email,mobile_number=mobile_no,first_name=first_name,last_name=last_name)
+            fk_company=parsed_data['fk_company']
+
+            User_Details.objects.filter(id=id).update(fk_company_id=fk_company,fk_designation_id=fk_designation,email=email,mobile_number=mobile_no,first_name=first_name,last_name=last_name)
             send_data = {'status':1,'msg':f'Employee profile has been updated successfully'}
         else:
             send_data = {'status':0,'msg':f'Request is not post'}
@@ -414,13 +417,13 @@ def Delete_Task(request):
             obj = Task_Master.objects.get(id=task_id)
             obj.delete()
             
-            pending_obj = Task_Master.objects.filter(status='Pending',fk_project_id=obj.fk_project.id).order_by('-id')
+            pending_obj = Task_Master.objects.filter(status='Pending',fk_milestone_id=obj.fk_milestone.id).order_by('-id')
             pending_rendered = render_to_string('superadmin/rts/kanban/rts_pending.html',{'pending_obj':list(pending_obj.values())})
 
-            progress_obj = Task_Master.objects.filter(status='Progress',fk_project_id=obj.fk_project.id).order_by('-id')
+            progress_obj = Task_Master.objects.filter(status='Progress',fk_milestone_id=obj.fk_milestone.id).order_by('-id')
             progress_rendered = render_to_string('superadmin/rts/kanban/rts_progress.html',{'progress_obj':progress_obj})
 
-            completed_obj = Task_Master.objects.filter(status='Completed',fk_project_id=obj.fk_project.id).order_by('-id')
+            completed_obj = Task_Master.objects.filter(status='Completed',fk_milestone_id=obj.fk_milestone.id).order_by('-id')
             completed_rendered = render_to_string('superadmin/rts/kanban/rts_completed.html',{'completed_obj':list(completed_obj.values())})
 
             
@@ -581,4 +584,82 @@ def Get_Project_Member(request):
     except:
         traceback.print_exc()
         send_data = {'status':0,'title':"error",'msg':'Something went wrong','error':traceback.print_exc()}
+    return JsonResponse(send_data)
+
+@csrf_exempt
+def Archive_Task(request):
+    try:
+        if request.method == "POST":
+            parsed_data = json.loads(request.body.decode('utf-8'))
+            id = parsed_data['task_id']
+            status = parsed_data['status']
+            obj = Task_Master.objects.get(id=id)
+            obj.status = status
+            obj.save()
+            send_data = {'status':1,'msg':f'{obj.title} task added to archived list Successfully'}
+        else:
+            send_data = {'status':0,'title':"error",'msg':'Request is not post'}
+    except:
+        traceback.print_exc()
+        send_data = {'status':0,'title':"error",'msg':'Something went wrong','error':traceback.print_exc()}
+    return JsonResponse(send_data)
+
+
+@csrf_exempt
+def  Filte_Archive_completed_task(request):
+    try:
+        if request.method == 'POST':
+            parsed_data = json.loads(request.body.decode('utf-8'))
+            milestone_id = parsed_data['milestone_id']
+            status = parsed_data['status']
+            completed_obj = Task_Master.objects.filter(status=status,fk_milestone_id=milestone_id).order_by('-id')
+            completed_rendered = render_to_string('superadmin/rts/kanban/rts_completed.html',{'completed_obj':list(completed_obj.values())})
+            send_data={'status':1,'msg':'Task list','completed_rendered':completed_rendered}
+        else:
+            send_data = {'status':0,'title':"error",'msg':'Request is not post'}
+    except:
+        traceback.print_exc()
+        send_data = {'status':0,'title':"error",'msg':'Something went wrong','error':traceback.print_exc()}
+    return  JsonResponse(send_data)
+
+
+@csrf_exempt
+def Add_Update_Company(request):
+    try:
+        if request.method == "POST":
+            parsed_data = json.loads(request.body.decode('utf-8'))
+            action = parsed_data['action']
+            company = parsed_data['company']
+            if action == 'add':
+                if  CompanyMaster.objects.filter(company_name=company).exists():
+                    send_data ={'status':2,'msg':f'This companay already esists'}
+                else:
+                    CompanyMaster.objects.create(company_name=company,created_date=datetime.now().date())
+                    send_data = {'status':1,'msg':f'Company has been {action}ed successfully'}
+
+            elif action == 'update':
+                id = parsed_data['id']
+                if  CompanyMaster.objects.filter(company_name=company).exclude(id=id).exists():
+                    send_data ={'status':2,'msg':f'This companay already esists'}
+                else:
+                    CompanyMaster.objects.filter(id=id).update(company_name=company)
+                    send_data = {'status':1,'msg':f'company has been {action}ed successfully'}
+    except:
+        traceback.print_exc()
+        send_data = {'status':0,'msg':'Something went wrong','error':traceback.print_exc()}
+    return JsonResponse(send_data)
+
+
+@csrf_exempt
+def Delete_Company(request):
+    try:
+        if request.method == "POST":
+            parsed_data = json.loads(request.body.decode('utf-8'))
+            id = parsed_data['id']
+            obj = CompanyMaster.objects.get(id=id)
+            obj.delete()
+            send_data = {'status':1,'msg':f'Company has been deleted successfully'}
+    except:
+        traceback.print_exc()
+        send_data = {'status':0,'msg':'Something went wrong','error':traceback.print_exc()}
     return JsonResponse(send_data)

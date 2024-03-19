@@ -18,6 +18,11 @@ class DesignationMasterAdmin(admin.ModelAdmin):
     list_display = ['id', 'designation', 'created_date']
 
 
+@admin.register(CompanyMaster)
+class CompanyMasterMasterAdmin(admin.ModelAdmin):
+    list_display = ['id', 'company_name', 'created_date']
+
+
 @admin.register(Super_Admin)
 class Super_AdminAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'username','created_date']

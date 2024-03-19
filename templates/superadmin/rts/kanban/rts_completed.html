@@ -14,7 +14,11 @@
                         <a class="dropdown-item deletetask" target="_blank" href="{% url 'View_Task_Detail' i.id %}">View</a>
                         <a class="dropdown-item deletetask" href="#" onclick="Delete_Task('{{i.id}}')" data-id="#uptask-2">Delete</a>
                         <a class="dropdown-item edittask-details"  href="#" onclick="Update_Task_Modal('{{i.id}}')" >Edit</a>
-                        
+                        {% if i.status == 'Completed' %}
+                           <a class="dropdown-item edittask-details"  href="#" onclick="Archive_Task('{{i.id}}','{{i.title}}')" >Shift to Archived</a>
+                        {% elif i.status == 'Archive' %}
+                           <a class="dropdown-item edittask-details"  href="#" onclick="Archive_Task('{{i.id}}','{{i.title}}')" >Shift to Complete</a>
+                        {% endif %}
                     </div>
                 </div> <!-- end dropdown -->
                 
@@ -58,7 +62,7 @@
                         </div>
                         
                         <div class="col-md-auto">
-                            <span class="badge rounded-pill badge-soft-success font-size-12" id="task-status">{{i.status }}</span>
+                            <span {% if i.status == 'Archive' %} class="badge rounded-pill badge-soft-danger font-size-12" {% else %} class="badge rounded-pill badge-soft-success font-size-12" {% endif %} id="task-status">{{i.status }}</span>
                         </div>
 
                     </div>

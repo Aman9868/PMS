@@ -5,6 +5,11 @@ class DesignationMaster(models.Model):
     designation = models.CharField(null=True, blank=True, max_length=100)
     created_date = models.DateField(null=True , blank=True) 
 
+class CompanyMaster(models.Model):
+    company_name = models.CharField(null=True, blank=True, max_length=100)
+    created_date = models.DateField(null=True , blank=True) 
+
+
 class CountryMaster(models.Model):
     country = models.CharField(null=True, blank=True, max_length=100)
     created_date = models.DateField(null=True , blank=True)
@@ -26,6 +31,7 @@ class Super_Admin(models.Model):
     created_date = models.DateField(null=True , blank=True)
 
 class User_Details(models.Model):
+    fk_company = models.ForeignKey(CompanyMaster, on_delete=models.CASCADE, null=True, blank=True)
     fk_designation = models.ForeignKey(DesignationMaster, on_delete=models.CASCADE, null=True, blank=True)
     created_date = models.DateField(null=True , blank=True) 
     first_name = models.CharField(null=True, blank=True, max_length=100)
@@ -98,6 +104,7 @@ class Task_Master(models.Model):
       	("Pending", "Pending"),
         ("Progress", "Progress"),
         ("Completed", "Completed"),
+        ("Archive", "Archive"),
 	)
     status=models.CharField(max_length= 200 , choices =STATUS, default='Pending')
     delay_days = models.IntegerField(null=True, default=0)

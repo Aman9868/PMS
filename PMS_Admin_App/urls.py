@@ -18,7 +18,8 @@ web_urls = [
     path('Update_Project/<int:id>',Update_Project,name='Update_Project'),
     path('Show_Tasks/<int:id>',Show_Tasks,name='Show_Tasks'),
     path('View_Task_Detail/<int:id>',View_Task_Detail,name='View_Task_Detail'),
-    path('Show_Project_Milestones/<int:id>',Show_Project_Milestones,name='Show_Project_Milestones')
+    path('Show_Project_Milestones/<int:id>',Show_Project_Milestones,name='Show_Project_Milestones'),
+    path('Company_List',Company_List,name='Company_List')
 ]
 
 ajax_urls = [
@@ -46,7 +47,11 @@ ajax_urls = [
     path('Remove_Milestone',views_aj.Remove_Milestone,name='Remove_Milestone'),
     path('Add_Milestone',views_aj.Add_Milestone,name='Add_Milestone'),
     path('Update_Milestone',views_aj.Update_Milestone,name='Update_Milestone'),
-    path('Get_Project_Member',views_aj.Get_Project_Member,name='Get_Project_Member')
+    path('Get_Project_Member',views_aj.Get_Project_Member,name='Get_Project_Member'),
+    path('Archive_Task',views_aj.Archive_Task,name='Archive_Task'),
+    path('Filte_Archive_completed_task',views_aj.Filte_Archive_completed_task,name='Filte_Archive_completed_task'),
+    path('Add_Update_Company',views_aj.Add_Update_Company,name='Add_Update_Company'),
+    path('Delete_Company',views_aj.Delete_Company,name='Delete_Company')
 ]
 
 urlpatterns = [*web_urls, *ajax_urls] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
