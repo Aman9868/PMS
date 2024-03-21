@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-t5r@p8gc^#ln*)(s=8g@4_$g9r_%m*(+p9rvd9$z4hbc^rq#tc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.vercel.app','.now.sh','127.0.0.1','localhost']
 
 # send email using
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -89,11 +89,11 @@ WSGI_APPLICATION = 'PMS.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'PMS_DB',
+        'NAME': 'railway',
         'USER': 'root',
-        'PORT': '3306',
-        'PASSWORD': 'Root@123',
-        'HOST': 'localhost',
+        'PORT': '18452',
+        'PASSWORD': 'vCmNRtnSkxQymUoSCAaNNkDTNyjAUmQD',
+        'HOST': 'roundhouse.proxy.rlwy.net',
         'OPTIONS': {
             'charset': 'utf8mb4',
             'use_unicode': True,
@@ -137,8 +137,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR,"static"),)
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # for collect static
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)  # Note the trailing comma
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 

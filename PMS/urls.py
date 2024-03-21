@@ -24,4 +24,6 @@ urlpatterns = [
     path('', include('PMS_App.urls')),
     path('pms_admin/', include('PMS_Admin_App.urls')),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
+urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
